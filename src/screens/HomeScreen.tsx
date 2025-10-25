@@ -73,7 +73,7 @@ export default function HomeScreen({
   async function onSubmit() {
     try {
       setLoading(true);
-      navigation.navigate("Result", { quoteId: "123456" });
+      navigation.navigate("SummaryFinish", { quoteId: "123456" });
     } catch (e) {
       console.error(e);
     } finally {
@@ -361,7 +361,7 @@ export default function HomeScreen({
       </View>
     </View>
   );
-  
+
   return (
     <Layout background={<BackgroundGradient />}>
       <Grid left={left} right={right} top={top} bottom={bottom} />
