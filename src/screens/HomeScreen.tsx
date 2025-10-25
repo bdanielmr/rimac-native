@@ -1,5 +1,5 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import React, { useMemo, useState } from "react";
+import React from "react";
 import { View } from "react-native";
 import { Badge } from "../components/atoms/Badge";
 import { Subtitle, Title } from "../components/atoms/Typography";
@@ -9,37 +9,29 @@ import { Layout } from "../components/Layout";
 import { FamilyImageCard } from "../components/molecules/FamilyImageCard";
 import { MobileHeader } from "../components/organisms/MobileHeader";
 import { QuoteForm } from "../components/organisms/QuoteForm";
+import { useQuoteForm } from "../hooks/useQuoteForm";
 import { RootStack } from "../navigation/AppNavigator";
-import { useAppStore } from "../store/appStore";
 
 export default function HomeScreen({
   navigation,
 }: NativeStackScreenProps<RootStack, "Home">) {
-  const { dni, celular, aceptaPP, aceptaMkt, set } = useAppStore();
-  const [tipoDocumento, setTipoDocumento] = useState("dni");
-  const [loading, setLoading] = useState(false);
-
-  const dniError = useMemo(() => {
-    if (!dni) return undefined;
-    return /^\d{8}$/.test(dni) ? undefined : "Debe tener 8 dígitos";
-  }, [dni]);
-
-  const celError = useMemo(() => {
-    if (!celular) return undefined;
-    return /^9\d{8}$/.test(celular)
-      ? undefined
-      : "Empieza en 9 y tiene 9 dígitos";
-  }, [celular]);
-
-  const ready = !!dni && !dniError && !!celular && !celError && !!aceptaPP;
-
-  const handleDniChange = (text: string) => {
-    set({ dni: text.replace(/\D/g, "").slice(0, 8) });
-  };
-
-  const handleCelularChange = (text: string) => {
-    set({ celular: text.replace(/\D/g, "").slice(0, 9) });
-  };
+  const {
+    dni,
+    celular,
+    aceptaPP,
+    aceptaMkt,
+    tipoDocumento,
+    setTipoDocumento,
+    dniError,
+    celError,
+    isFormValid,
+    handleDniChange,
+    handleCelularChange,
+    handleAceptaPPChange,
+    handleAceptaMktChange,
+    loading,
+    setLoading,
+  } = useQuoteForm();
 
   const handleSubmit = async () => {
     try {
@@ -73,11 +65,11 @@ export default function HomeScreen({
           handleCelularChange={handleCelularChange}
           celError={celError}
           aceptaPP={aceptaPP}
-          setAceptaPP={(v) => set({ aceptaPP: v })}
+          setAceptaPP={handleAceptaPPChange}
           aceptaMkt={aceptaMkt}
-          setAceptaMkt={(v) => set({ aceptaMkt: v })}
+          setAceptaMkt={handleAceptaMktChange}
           loading={loading}
-          ready={ready}
+          ready={isFormValid}
           onSubmit={handleSubmit}
           gap={10}
         />
@@ -103,11 +95,11 @@ export default function HomeScreen({
         handleCelularChange={handleCelularChange}
         celError={celError}
         aceptaPP={aceptaPP}
-        setAceptaPP={(v) => set({ aceptaPP: v })}
+        setAceptaPP={handleAceptaPPChange}
         aceptaMkt={aceptaMkt}
-        setAceptaMkt={(v) => set({ aceptaMkt: v })}
+        setAceptaMkt={handleAceptaMktChange}
         loading={loading}
-        ready={ready}
+        ready={isFormValid}
         onSubmit={handleSubmit}
       />
     </View>
