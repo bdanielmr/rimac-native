@@ -36,7 +36,7 @@ export default function HomeScreen({
   const handleSubmit = async () => {
     try {
       setLoading(true);
-      navigation.navigate("SummaryFinish", { quoteId: "123456" });
+      navigation.navigate("Plans");
     } catch (e) {
       console.error(e);
     } finally {

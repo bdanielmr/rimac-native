@@ -1,5 +1,5 @@
 import React from "react";
-import { Text, View } from "react-native";
+import { Image, View } from "react-native";
 import styled from "styled-components/native";
 import { Separator } from "../atoms/Separator";
 
@@ -160,6 +160,11 @@ const renderBenefitText = (text: string) => {
   );
 };
 
+const iconMap = {
+  homeLight: require('../../../assets/images/homeLight.png'),
+  hospitalLight: require('../../../assets/images/hospitalLight.png'),
+};
+
 export const PlanCard: React.FC<PlanCardProps> = ({
   name,
   icon,
@@ -179,7 +184,15 @@ export const PlanCard: React.FC<PlanCardProps> = ({
 
     <PlanHeader hasBadge={!!badge}>
       <PlanIconContainer>
-        <Text style={{ fontSize: 48 }}>{icon}</Text>
+        <Image
+          source={iconMap[icon as keyof typeof iconMap]}
+          style={{
+            position: "absolute",
+            right: 0,
+            top: 0,
+
+          }}
+        />
       </PlanIconContainer>
       <PlanTitle>{name}</PlanTitle>
     </PlanHeader>
