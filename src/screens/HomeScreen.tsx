@@ -1,6 +1,6 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import React from "react";
-import { View } from "react-native";
+import { Alert, View } from "react-native";
 import { Badge } from "../components/atoms/Badge";
 import { Subtitle, Title } from "../components/atoms/Typography";
 import BackgroundGradient from "../components/BackgroundGradient";
@@ -30,17 +30,22 @@ export default function HomeScreen({
     handleAceptaPPChange,
     handleAceptaMktChange,
     loading,
-    setLoading,
+    error,
+    fetchData,
   } = useQuoteForm();
 
   const handleSubmit = async () => {
     try {
-      setLoading(true);
-      navigation.navigate("Plans");
+      const success = await fetchData();
+      
+      if (success) {
+        navigation.navigate("Plans");
+      } else if (error) {
+        Alert.alert("Error", error);
+      }
     } catch (e) {
       console.error(e);
-    } finally {
-      setLoading(false);
+      Alert.alert("Error", "Ocurrió un error inesperado");
     }
   };
 
@@ -81,7 +86,7 @@ export default function HomeScreen({
 
   const bottom = (
     <View style={{ width: "100%" }}>
-      <Subtitle style={{ maxWidth: "100%", marginBottom: 24 }}>
+      <Subtitle style={{ maxWidth: "100%", marginBottom: 10 }}>
         Tú eliges cuánto pagar. Ingresa tus datos, cotiza y recibe nuestra
         asesoría. 100% online.
       </Subtitle>
