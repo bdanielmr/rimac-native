@@ -1,4 +1,5 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { fetchPlans, fetchUser } from "../services/api";
 import { useAppStore } from "../store/appStore";
 
 interface ValidationRules {
@@ -14,12 +15,40 @@ const VALIDATION_RULES: ValidationRules = {
 const ERROR_MESSAGES = {
   dni: "Debe tener 8 dígitos",
   celular: "Empieza en 9 y tiene 9 dígitos",
+  fetchUser: "Error al obtener datos del usuario",
+  fetchPlans: "Error al obtener planes disponibles",
+  dniRequired: "DNI no proporcionado",
 };
 
 export const useQuoteForm = () => {
-  const { dni, celular, aceptaPP, aceptaMkt, set } = useAppStore();
+  const { 
+    dni, 
+    celular, 
+    aceptaPP, 
+    aceptaMkt, 
+    set, 
+    shouldFetchData, 
+    setCachedData,
+    loadFromStorage
+  } = useAppStore();
+  
   const [tipoDocumento, setTipoDocumento] = useState("dni");
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [isStorageLoaded, setIsStorageLoaded] = useState(false);
+
+  useEffect(() => {
+    const initStorage = async () => {
+      try {
+        await loadFromStorage();
+      } catch (err) {
+        console.error("error cargando storage:", err);
+      } finally {
+        setIsStorageLoaded(true);
+      }
+    };
+    initStorage();
+  }, [loadFromStorage]);
 
   const dniError = useMemo(() => {
     if (!dni) return undefined;
@@ -56,6 +85,58 @@ export const useQuoteForm = () => {
     set({ aceptaMkt: value });
   };
 
+  const fetchData = async (): Promise<boolean> => {
+    if (!dni) {
+      setError(ERROR_MESSAGES.dniRequired);
+      return false;
+    }
+
+    if (dniError) {
+      setError(dniError);
+      return false;
+    }
+
+    if (!shouldFetchData(dni)) {
+      console.log("datos en cache para dni:", dni);
+      return true;
+    }
+
+    setLoading(true);
+    setError(null);
+
+    try {
+      console.log("fetching usuario para dni:", dni);
+      const userData = await fetchUser();
+      
+      if (!userData) {
+        throw new Error(ERROR_MESSAGES.fetchUser);
+      }
+      
+      console.log("usuario obtenido:", userData);
+
+      console.log("fetching planes...");
+      const plansData = await fetchPlans();
+      
+      if (!plansData || !plansData.list) {
+        throw new Error(ERROR_MESSAGES.fetchPlans);
+      }
+      
+      console.log("planes obtenidos:", plansData.list.length, "planes");
+
+      setCachedData(userData, plansData.list, dni);
+      console.log("daatos cargados y cacheados");
+      
+      return true;
+    } catch (err) {
+      const errorMessage = err instanceof Error ? err.message : "error desconocido";
+      setError(errorMessage);
+      console.error("error fetching data:", err);
+      return false;
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return {
     dni,
     celular,
@@ -72,5 +153,8 @@ export const useQuoteForm = () => {
     handleAceptaMktChange,
     loading,
     setLoading,
+    error,
+    fetchData,
+    isStorageLoaded,
   };
 };
