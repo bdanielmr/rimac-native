@@ -10,7 +10,6 @@ const TermsText = styled.Text`
   font-size: 12px;
   font-weight: 600;
   text-decoration-line: underline;
-  margin-top: 4px;
 `;
 
 const DOCUMENT_OPTIONS = [

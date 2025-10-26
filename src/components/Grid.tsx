@@ -31,7 +31,7 @@ const ColRight = styled.View`
 
 const MobileContainer = styled.View`
   width: 100%;
-  gap: 32px;
+  gap: 10px;
   padding: 0 24px;
 `;
 

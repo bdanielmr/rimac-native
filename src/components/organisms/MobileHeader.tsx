@@ -13,7 +13,7 @@ export const MobileHeader: React.FC = () => (
         alignItems: "center",
         justifyContent: "space-between",
         gap: 12,
-        marginBottom: 24,
+        marginBottom: 10,
       }}
     >
       <View style={{ flex: 1, paddingRight: 8, justifyContent: "center" }}>

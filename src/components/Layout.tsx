@@ -78,7 +78,7 @@ const Footer = styled.View`
   border-top-width: 1px;
   border-top-color: #e5e7eb;
   background: #03050f;
-  padding: 24px 8%;
+  padding: 20px 11%;
 `;
 
 const FooterContent = styled.View`
