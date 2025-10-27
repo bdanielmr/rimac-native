@@ -55,8 +55,8 @@ const CircleContainer = styled.View`
   flex-direction: row;
   align-items: center;
   gap: 8px;
-
 `;
+
 const CircleButton = styled(TouchableOpacity)<{ disabled?: boolean }>`
   width: 20px;
   height: 20px;
@@ -68,6 +68,7 @@ const CircleButton = styled(TouchableOpacity)<{ disabled?: boolean }>`
   padding: 0px 4px 4px 2px;
   opacity: ${({ disabled }: any) => (disabled ? 0.5 : 1)};
 `;
+
 const STEPS = [
   { number: 1, label: "Planes y coberturas" },
   { number: 2, label: "Resumen" },
@@ -80,6 +81,7 @@ export default function PlanScreen({
     beneficiaryType,
     selectedPlan,
     currentPlans,
+    userName,
     handleBeneficiarySelect,
     handlePlanSelect,
     goBack,
@@ -87,85 +89,78 @@ export default function PlanScreen({
 
   const handleSelectPlan = (planId: any) => {
     handlePlanSelect(planId);
-    navigation.navigate("SummaryFinish", { quoteId :'result'})
+    navigation.navigate("SummaryFinish", { quoteId: "result" });
   };
 
   const content = (
     <ScrollView
-        keyboardShouldPersistTaps="handled"
-        nestedScrollEnabled
-        directionalLockEnabled
-        contentContainerStyle={{ paddingBottom: 24 }}
+      keyboardShouldPersistTaps="handled"
+      nestedScrollEnabled
+      directionalLockEnabled
+      contentContainerStyle={{ paddingBottom: 24 }}
     >
       <Container>
-        {(beneficiaryType || selectedPlan) && (<CircleContainer>
-                  <CircleButton activeOpacity={0.7} onPress={() => navigation.navigate("Home")}>
-                    <Text style={{ fontSize: 18, color: "#4338CA" }}>
-                      ‹
-                    </Text>
-                  </CircleButton>
-                  <BackText>
-                  Volver
-                  </BackText>
-                  </CircleContainer>
+        {(beneficiaryType || selectedPlan) && (
+          <CircleContainer>
+            <CircleButton activeOpacity={0.7} onPress={() => navigation.navigate("Home")}>
+              <Text style={{ fontSize: 18, color: "#4338CA" }}>‹</Text>
+            </CircleButton>
+            <BackText>Volver</BackText>
+          </CircleContainer>
         )}
 
-        <Title>Rocío ¿Para quién deseas cotizar?</Title>
+        <Title>{userName} ¿Para quién deseas cotizar?</Title>
         <Subtitle>Selecciona la opción que se ajuste más a tus necesidades.</Subtitle>
 
-        { (
-            <CardsContainer>
-            <BeneficiaryCard
-                icon={        
-                        <Image
-                          source={require("../../assets/images/protectionLight.png")}
-                          style={{
-                            position: "absolute",
-                            right: 0,
-                            top: 0,
-                
-                          }}
-                        />
-                      }
-                title="Para mí"
-                description="Cotiza tu seguro de salud y agrega familiares si así lo deseas."
-                selected={beneficiaryType === "para-mi"}
-                onPress={() => handleBeneficiarySelect("para-mi")}
-            />
-            <BeneficiaryCard
-                icon={        
-                        <Image
-                          source={require("../../assets/images/addUserLight.png")}
-                          style={{
-                            position: "absolute",
-                            right: 0,
-                            top: 0,
-                
-                          }}
-                        />
-                      }
-                title="Para alguien más"
-                description="Realiza una cotización para uno de tus familiares o cualquier persona."
-                selected={beneficiaryType === "para-alguien-mas"}
-                onPress={() => handleBeneficiarySelect("para-alguien-mas")}
-            />
-            </CardsContainer>
-        )}
+        <CardsContainer>
+          <BeneficiaryCard
+            icon={
+              <Image
+                source={require("../../assets/images/protectionLight.png")}
+                style={{
+                  position: "absolute",
+                  right: 0,
+                  top: 0,
+                }}
+              />
+            }
+            title="Para mí"
+            description="Cotiza tu seguro de salud y agrega familiares si así lo deseas."
+            selected={beneficiaryType === "para-mi"}
+            onPress={() => handleBeneficiarySelect("para-mi")}
+          />
+          <BeneficiaryCard
+            icon={
+              <Image
+                source={require("../../assets/images/addUserLight.png")}
+                style={{
+                  position: "absolute",
+                  right: 0,
+                  top: 0,
+                }}
+              />
+            }
+            title="Para alguien más"
+            description="Realiza una cotización para uno de tus familiares o cualquier persona."
+            selected={beneficiaryType === "para-alguien-mas"}
+            onPress={() => handleBeneficiarySelect("para-alguien-mas")}
+          />
+        </CardsContainer>
 
         {beneficiaryType && (
-        <PlansContainer>
+          <PlansContainer>
             <PlanCarousel
-            plans={currentPlans.map(p => ({ ...p, id: String(p.id) }))}
-            onSelect={(id) => handleSelectPlan(id as any)}
+              plans={currentPlans.map((p) => ({ ...p, id: String(p.id) }))}
+              onSelect={(id) => handleSelectPlan(id as any)}
             />
-        </PlansContainer>
+          </PlansContainer>
         )}
       </Container>
     </ScrollView>
   );
 
   return (
-    <Layout stepper={<StepIndicator steps={STEPS} currentStep={1}/>} >
+    <Layout stepper={<StepIndicator steps={STEPS} currentStep={1} />}>
       {content}
     </Layout>
   );

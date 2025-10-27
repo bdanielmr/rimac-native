@@ -1,11 +1,11 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import React from "react";
-import { Text, View } from "react-native";
+import { Image, ScrollView, Text, TouchableOpacity, View } from "react-native";
 import styled from "styled-components/native";
 import { StepIndicator } from "../components/atoms/StepIndicator";
 import { Layout } from "../components/Layout";
 import { RootStack } from "../navigation/AppNavigator";
-import { useBreakpoint } from "../theme/responsive";
+import { useAppStore } from "../store/appStore";
 
 const Container = styled.View`
   width: 100%;
@@ -14,17 +14,9 @@ const Container = styled.View`
   padding: 4% 7% 7%;
 `;
 
-const BackButton = styled.TouchableOpacity`
-  flex-direction: row;
-  align-items: center;
-  gap: 8px;
-  margin-bottom: 24px;
-`;
-
 const BackText = styled.Text`
-  font-size: 14px;
-  color: #2563eb;
-  font-weight: 600;
+  font-size: 18px;
+  color: #4338CA;
 `;
 
 const Title = styled.Text`
@@ -48,16 +40,16 @@ const SummaryCard = styled.View`
 `;
 
 const SectionTitle = styled.Text`
-  font-size: 11px;
-  color: #9ca3af;
+  font-size: 10px;
+  color: #141938;
   letter-spacing: 0.5px;
   margin-bottom: 8px;
-  font-weight: 600;
+  font-weight: 700;
 `;
 
 const UserName = styled.Text`
   font-size: 20px;
-  font-weight: 700;
+  font-weight: 500;
   color: #03050f;
   margin-bottom: 24px;
 `;
@@ -67,20 +59,22 @@ const InfoRow = styled.View`
 `;
 
 const InfoLabel = styled.Text`
-  font-size: 14px;
-  font-weight: 700;
-  color: #03050f;
+  font-size: 16px;
+  font-weight: 500;
+  color: #141938;
   margin-bottom: 4px;
 `;
 
 const InfoValue = styled.Text`
   font-size: 14px;
-  color: #03050f;
+  color: #141938;
+  line-height: 25px;
 `;
 
 const Divider = styled.View`
   height: 1px;
   background-color: #e5e7eb;
+  margin-top: 15px
 `;
 
 const PlanSection = styled.View`
@@ -88,26 +82,41 @@ const PlanSection = styled.View`
 `;
 
 const PlanName = styled.Text`
-  font-size: 18px;
-  font-weight: 700;
-  color: #03050f;
+  font-size: 14px;
+  color: #141938;
   margin-bottom: 8px;
 `;
 
 const PlanCost = styled.Text`
   font-size: 14px;
-  color: #03050f;
+  color: #141938;
 `;
 
 const UserIcon = styled.View`
-  width: 56px;
-  height: 56px;
-  border-radius: 28px;
-  background-color: #e0e7ff;
+  width: 24px;
+  height: 24px;
+`;
+
+const CircleContainer = styled.View`
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 24px;
+`;
+
+const CircleButton = styled(TouchableOpacity)<{ disabled?: boolean }>`
+  width: 20px;
+  height: 20px;
+  border-radius: 20px;
+  border-width: 2px;
+  border-color: ${({ disabled }: any) => (disabled ? "#CBD5E1" : "#4338CA")};
   align-items: center;
   justify-content: center;
-  margin-bottom: 16px;
+  padding: 0px 4px 4px 2px;
+  opacity: ${({ disabled }: any) => (disabled ? 0.5 : 1)};
 `;
+
+
 
 const STEPS = [
   { number: 1, label: "Planes y coberturas" },
@@ -115,33 +124,35 @@ const STEPS = [
 ];
 
 export default function SummaryFinishScreen({
-  route,
   navigation,
 }: NativeStackScreenProps<RootStack, "SummaryFinish">) {
-  const { quoteId } = route.params;
-  const { isMobile } = useBreakpoint();
-
-  const summaryData = {
-    userName: "Rocío Miranda Díaz",
-    dni: "444888888",
-    phone: "5130216147",
-    planName: "Plan en Casa y Clínica",
-    planCost: "$99 al mes",
-  };
+  const { selectedPlanInfo } = useAppStore();
 
   const stepper = (
     <View style={{ alignItems: "center" }}>
       <StepIndicator steps={STEPS} currentStep={2} />
     </View>
   );
-
+  if (!selectedPlanInfo) {
+    return (
+      <Layout>
+        <Text>No hay información de plan seleccionado</Text>
+      </Layout>
+    );
+  }
   return (
     <Layout stepper={stepper}>
+      <ScrollView 
+        contentContainerStyle={{ flexGrow: 1 }}
+        showsVerticalScrollIndicator={false}
+      >
       <Container>
-        <BackButton onPress={() => navigation.goBack()}>
-          <Text style={{ color: "#2563eb", fontSize: 18 }}>←</Text>
-          <BackText>Volver</BackText>
-        </BackButton>
+          <CircleContainer>
+            <CircleButton activeOpacity={0.7} onPress={() => navigation.navigate("Plans")}>
+              <Text style={{ fontSize: 18, color: "#4338CA" }}>‹</Text>
+            </CircleButton>
+            <BackText>Volver</BackText>
+          </CircleContainer>
 
         <Title>Resumen del seguro</Title>
         
@@ -150,26 +161,35 @@ export default function SummaryFinishScreen({
           
           <View style={{ flexDirection: "row", alignItems: "center", }}>
             <UserIcon>
-              <Text style={{ fontSize: 24 }}>👤</Text>
+
+                <Image
+                  source={require("../../assets/images/glfamily.png")}
+                  style={{
+                    position: "absolute",
+                    right: 0,
+                    top: 0,
+                  }}
+                />
             </UserIcon>
             <UserName style={{ marginBottom: 0, marginLeft: 12 }}>
-              {summaryData.userName}
+              {selectedPlanInfo.userName} {selectedPlanInfo.userLastName}
             </UserName>
           </View>
           <Divider />
           <InfoRow>
             <InfoLabel>Responsable de pago</InfoLabel>
-            <InfoValue>DNI: {summaryData.dni}</InfoValue>
-            <InfoValue>Celular: {summaryData.phone}</InfoValue>
+            <InfoValue>DNI: {selectedPlanInfo.dni}</InfoValue>
+            <InfoValue>Celular: {selectedPlanInfo.celular}</InfoValue>
           </InfoRow>
 
           <PlanSection>
             <InfoLabel>Plan elegido</InfoLabel>
-            <PlanName>{summaryData.planName}</PlanName>
-            <PlanCost>Costo del Plan: {summaryData.planCost}</PlanCost>
+            <PlanName>{selectedPlanInfo.planName}</PlanName>
+            <PlanCost>Costo del Plan: ${selectedPlanInfo.planCost}</PlanCost>
           </PlanSection>
         </SummaryCard>
       </Container>
+      </ScrollView>
     </Layout>
   );
 }

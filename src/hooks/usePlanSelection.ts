@@ -1,112 +1,67 @@
 import { useMemo, useState } from "react";
+import { useAppStore } from "../store/appStore";
+import { BeneficiaryType, PlanType } from "../types";
+import { calculateAge, transformApiPlansToFormat } from "../utils";
 
-export type BeneficiaryType = "para-mi" | "para-alguien-mas";
-export type PlanType = "casa" | "clinica" | "chequeo";
-
-interface Plan {
-  id: PlanType;
-  name: string;
-  icon: string;
-  badge?: string;
-  cost: number;
-  costBefore?: number;
-  benefits: string[];
-}
-
-const PLANS: Record<BeneficiaryType, Plan[]> = {
-  "para-mi": [
-    {
-      id: "casa",
-      name: "Plan en Casa",
-      icon: "homeLight",
-      cost: 39,
-      benefits: [
-        "**Médico general a domicilio** por S/20 y medicinas cubiertas al 100%.",
-        "**Videoconsulta** y orientación telefónica al 100% en medicina general + pediatría.",
-        "**Indemnización** de S/300 en caso de hospitalización por más de un día.",
-      ],
-    },
-    {
-      id: "clinica",
-      name: "Plan en Casa y Clínica",
-      icon: "hospitalLight",
-      badge: "Plan recomendado",
-      cost: 99,
-      benefits: [
-        "**Consultas en clínica** para cualquier especialidad.",
-        "**Medicinas y exámenes** derivados cubiertos al 80%.",
-        "Atención médica en **más de 200 clínicas del país.**",
-      ],
-    },
-    {
-      id: "chequeo",
-      name: "Plan en Casa + Chequeo",
-      icon: "homeLight",
-      cost: 49,
-      benefits: [
-        "**Un Chequeo preventivo general** de manera presencial o virtual.",
-        "Acceso a **Vacunas** en el Programa del MINSA en centros privados.",
-        "**Incluye todos los beneficios del Plan en Casa.**",
-      ],
-    },
-  ],
-  "para-alguien-mas": [
-    {
-      id: "casa",
-      name: "Plan en Casa",
-      icon: "homeLight",
-      cost: 37.05,
-      costBefore: 39,
-      benefits: [
-        "**Médico general a domicilio** por S/20 y medicinas cubiertas al 100%.",
-        "**Videoconsulta** y orientación telefónica al 100% en medicina general + pediatría.",
-        "**Indemnización** de S/300 en caso de hospitalización por más de un día.",
-      ],
-    },
-    {
-      id: "clinica",
-      name: "Plan en Casa y Clínica",
-      icon: "hospitalLight",
-      badge: "Plan recomendado",
-      cost: 94.05,
-      costBefore: 99,
-      benefits: [
-        "**Consultas en clínica** para cualquier especialidad.",
-        "**Medicinas y exámenes** derivados cubiertos al 80%.",
-        "Atención médica en **más de 200 clínicas del país.**",
-      ],
-    },
-    {
-      id: "chequeo",
-      name: "Plan en Casa + Chequeo",
-      icon: "homeLight",
-      cost: 46.55,
-      costBefore: 49,
-      benefits: [
-        "**Un Chequeo preventivo general** de manera presencial o virtual.",
-        "Acceso a **Vacunas** en el Programa del MINSA en centros privados.",
-        "**Incluye todos los beneficios del Plan en Casa.**",
-      ],
-    },
-  ],
-};
 
 export const usePlanSelection = () => {
   const [beneficiaryType, setBeneficiaryType] = useState<BeneficiaryType | null>(null);
   const [selectedPlan, setSelectedPlan] = useState<PlanType | null>(null);
+  const { cachedUser, cachedPlans, dni, celular, setSelectedPlanInfo } = useAppStore();
 
-  const currentPlans = useMemo(() => (beneficiaryType ? PLANS[beneficiaryType] : []), [beneficiaryType]);
+  const userAge = useMemo(() => {
+    if (!cachedUser?.birthDay) return 0;
+    return calculateAge(cachedUser.birthDay);
+  }, [cachedUser]);
 
-  const selectedPlanDetails = useMemo(
-    () => currentPlans.find((plan) => plan.id === selectedPlan) || null,
-    [currentPlans, selectedPlan]
-  );
+  const filteredApiPlans = useMemo(() => {
+    if (!cachedPlans || cachedPlans.length === 0) return [];
+    
+    const filtered = cachedPlans.filter((plan) => {
+      const isEligible = userAge <= plan.age;
+      return isEligible;
+    });
+    
+    return filtered;
+  }, [cachedPlans, userAge]);
+
+  const formattedPlans = useMemo(() => {
+    if (filteredApiPlans.length === 0) return null;
+    
+    const transformed = transformApiPlansToFormat(filteredApiPlans);
+    return transformed;
+  }, [filteredApiPlans]);
+
+  const currentPlans = useMemo(() => {
+    if (!beneficiaryType || !formattedPlans) return [];
+    return formattedPlans[beneficiaryType];
+  }, [beneficiaryType, formattedPlans]);
 
   const handleBeneficiarySelect = (type: BeneficiaryType) => {
     setBeneficiaryType((prev) => (prev === type ? null : type));
   };
 
-  const handlePlanSelect = (planId: PlanType) => setSelectedPlan(planId);
+  const handlePlanSelect = (planId: PlanType) => {
+    setSelectedPlan(planId);
+    
+    const selectedPlanDetails = currentPlans.find((plan) => plan.id === planId);
+    
+    if (selectedPlanDetails && cachedUser && beneficiaryType) {
+
+      const planInfo = {
+        userName: cachedUser.name,
+        userLastName: cachedUser.lastName,
+        dni: dni,
+        celular: celular,
+        planName: selectedPlanDetails.name,
+        planCost: selectedPlanDetails.cost,
+        beneficiaryType: beneficiaryType,
+        selectedAt: Date.now(),
+      };
+      
+      setSelectedPlanInfo(planInfo);
+    }
+  };
 
   const goBack = () => {
     setBeneficiaryType(null);
@@ -117,10 +72,12 @@ export const usePlanSelection = () => {
     beneficiaryType,
     selectedPlan,
     currentPlans,
-    selectedPlanDetails,
+    selectedPlanDetails: currentPlans.find((plan) => plan.id === selectedPlan) || null,
     handleBeneficiarySelect,
     handlePlanSelect,
     goBack,
+    userAge,
+    userName: cachedUser ? cachedUser.name : "Usuario",
+    hasPlans: currentPlans.length > 0,
   };
 };
-

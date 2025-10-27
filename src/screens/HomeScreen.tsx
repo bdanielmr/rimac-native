@@ -1,6 +1,6 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import React from "react";
-import { Alert, View } from "react-native";
+import { Alert, ScrollView, View } from "react-native";
 import { Badge } from "../components/atoms/Badge";
 import { Subtitle, Title } from "../components/atoms/Typography";
 import BackgroundGradient from "../components/BackgroundGradient";
@@ -112,7 +112,12 @@ export default function HomeScreen({
 
   return (
     <Layout background={<BackgroundGradient />}>
-      <Grid left={left} right={right} top={top} bottom={bottom} />
+      <ScrollView 
+        contentContainerStyle={{ flexGrow: 1 }}
+        showsVerticalScrollIndicator={false}
+      >
+        <Grid left={left} right={right} top={top} bottom={bottom} />
+      </ScrollView>
     </Layout>
   );
 }
