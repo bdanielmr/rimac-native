@@ -1,0 +1,411 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`StepIndicator Component Snapshot tests matches snapshot for desktop first step 1`] = `
+<View
+  style={
+    {
+      "flexDirection": "row",
+      "justifyContent": "center",
+      "paddingBottom": 20,
+      "paddingLeft": 16,
+      "paddingRight": 16,
+      "paddingTop": 20,
+    }
+  }
+>
+  <View
+    style={
+      {
+        "alignItems": "center",
+        "flexDirection": "row",
+        "gap": 12,
+      }
+    }
+  >
+    <View
+      active={true}
+      completed={false}
+      style={
+        {
+          "alignItems": "center",
+          "backgroundColor": "#4F4FFF",
+          "borderBottomLeftRadius": 12,
+          "borderBottomRightRadius": 12,
+          "borderColor": "#4F4FFF",
+          "borderTopLeftRadius": 12,
+          "borderTopRightRadius": 12,
+          "borderWidth": 1,
+          "height": 24,
+          "justifyContent": "center",
+          "width": 24,
+        }
+      }
+    >
+      <Text
+        active={true}
+        completed={false}
+        style={
+          {
+            "color": "white",
+            "fontSize": 12,
+            "fontWeight": "700",
+          }
+        }
+      >
+        1
+      </Text>
+    </View>
+    <Text
+      active={true}
+      completed={false}
+      style={
+        {
+          "color": "#141938",
+          "fontSize": 16,
+          "fontWeight": "700",
+        }
+      }
+    >
+      Planes y coberturas
+    </Text>
+  </View>
+  <Text
+    completed={false}
+    style={
+      {
+        "color": "#4F4FFF",
+        "fontSize": 20,
+        "marginBottom": 0,
+        "marginLeft": 16,
+        "marginRight": 16,
+        "marginTop": 0,
+      }
+    }
+  >
+    - - - -
+  </Text>
+  <View
+    style={
+      {
+        "alignItems": "center",
+        "flexDirection": "row",
+        "gap": 12,
+      }
+    }
+  >
+    <View
+      active={false}
+      completed={false}
+      style={
+        {
+          "alignItems": "center",
+          "backgroundColor": "transparent",
+          "borderBottomLeftRadius": 12,
+          "borderBottomRightRadius": 12,
+          "borderColor": "#7981B2",
+          "borderTopLeftRadius": 12,
+          "borderTopRightRadius": 12,
+          "borderWidth": 1,
+          "height": 24,
+          "justifyContent": "center",
+          "width": 24,
+        }
+      }
+    >
+      <Text
+        active={false}
+        completed={false}
+        style={
+          {
+            "color": "#7981B2",
+            "fontSize": 12,
+            "fontWeight": "700",
+          }
+        }
+      >
+        2
+      </Text>
+    </View>
+    <Text
+      active={false}
+      completed={false}
+      style={
+        {
+          "color": "#7981B2",
+          "fontSize": 16,
+          "fontWeight": "400",
+        }
+      }
+    >
+      Resumen
+    </Text>
+  </View>
+</View>
+`;
+
+exports[`StepIndicator Component Snapshot tests matches snapshot for desktop last step 1`] = `
+<View
+  style={
+    {
+      "flexDirection": "row",
+      "justifyContent": "center",
+      "paddingBottom": 20,
+      "paddingLeft": 16,
+      "paddingRight": 16,
+      "paddingTop": 20,
+    }
+  }
+>
+  <View
+    style={
+      {
+        "alignItems": "center",
+        "flexDirection": "row",
+        "gap": 12,
+      }
+    }
+  >
+    <View
+      active={false}
+      completed={true}
+      style={
+        {
+          "alignItems": "center",
+          "backgroundColor": "transparent",
+          "borderBottomLeftRadius": 12,
+          "borderBottomRightRadius": 12,
+          "borderColor": "#7981B2",
+          "borderTopLeftRadius": 12,
+          "borderTopRightRadius": 12,
+          "borderWidth": 1,
+          "height": 24,
+          "justifyContent": "center",
+          "width": 24,
+        }
+      }
+    >
+      <Text
+        active={false}
+        completed={true}
+        style={
+          {
+            "color": "#7981B2",
+            "fontSize": 12,
+            "fontWeight": "700",
+          }
+        }
+      >
+        1
+      </Text>
+    </View>
+    <Text
+      active={false}
+      completed={true}
+      style={
+        {
+          "color": "#7981B2",
+          "fontSize": 16,
+          "fontWeight": "400",
+        }
+      }
+    >
+      Planes y coberturas
+    </Text>
+  </View>
+  <Text
+    completed={true}
+    style={
+      {
+        "color": "#7981B2",
+        "fontSize": 20,
+        "marginBottom": 0,
+        "marginLeft": 16,
+        "marginRight": 16,
+        "marginTop": 0,
+      }
+    }
+  >
+    - - - -
+  </Text>
+  <View
+    style={
+      {
+        "alignItems": "center",
+        "flexDirection": "row",
+        "gap": 12,
+      }
+    }
+  >
+    <View
+      active={true}
+      completed={false}
+      style={
+        {
+          "alignItems": "center",
+          "backgroundColor": "#4F4FFF",
+          "borderBottomLeftRadius": 12,
+          "borderBottomRightRadius": 12,
+          "borderColor": "#4F4FFF",
+          "borderTopLeftRadius": 12,
+          "borderTopRightRadius": 12,
+          "borderWidth": 1,
+          "height": 24,
+          "justifyContent": "center",
+          "width": 24,
+        }
+      }
+    >
+      <Text
+        active={true}
+        completed={false}
+        style={
+          {
+            "color": "white",
+            "fontSize": 12,
+            "fontWeight": "700",
+          }
+        }
+      >
+        2
+      </Text>
+    </View>
+    <Text
+      active={true}
+      completed={false}
+      style={
+        {
+          "color": "#141938",
+          "fontSize": 16,
+          "fontWeight": "700",
+        }
+      }
+    >
+      Resumen
+    </Text>
+  </View>
+</View>
+`;
+
+exports[`StepIndicator Component Snapshot tests matches snapshot for mobile view 1`] = `
+<View
+  style={
+    {
+      "alignItems": "center",
+      "backgroundColor": "white",
+      "borderBottomColor": "#D7DBF5",
+      "borderBottomWidth": 1,
+      "flexDirection": "row",
+      "gap": 10,
+      "justifyContent": "flex-start",
+      "paddingBottom": 20,
+      "paddingLeft": 30,
+      "paddingRight": 30,
+      "paddingTop": 20,
+    }
+  }
+>
+  <View
+    style={
+      {
+        "alignItems": "center",
+        "flexDirection": "row",
+        "gap": 8,
+      }
+    }
+  >
+    <View
+      accessibilityState={
+        {
+          "busy": undefined,
+          "checked": undefined,
+          "disabled": undefined,
+          "expanded": undefined,
+          "selected": undefined,
+        }
+      }
+      accessibilityValue={
+        {
+          "max": undefined,
+          "min": undefined,
+          "now": undefined,
+          "text": undefined,
+        }
+      }
+      accessible={true}
+      collapsable={false}
+      focusable={true}
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        {
+          "alignItems": "center",
+          "borderBottomLeftRadius": 20,
+          "borderBottomRightRadius": 20,
+          "borderColor": "#CBD5E1",
+          "borderTopLeftRadius": 20,
+          "borderTopRightRadius": 20,
+          "borderWidth": 2,
+          "height": 24,
+          "justifyContent": "center",
+          "opacity": 1,
+          "width": 24,
+        }
+      }
+    >
+      <Image
+        source="arrorDownGrey"
+      />
+    </View>
+  </View>
+  <Text
+    active={true}
+    completed={false}
+    style={
+      {
+        "color": "#141938",
+        "fontSize": 10,
+        "fontWeight": "700",
+      }
+    }
+  >
+    PASO 1 DE 2
+  </Text>
+  <View
+    style={
+      {
+        "backgroundColor": "#C5CAE9",
+        "borderBottomLeftRadius": 8,
+        "borderBottomRightRadius": 8,
+        "borderTopLeftRadius": 8,
+        "borderTopRightRadius": 8,
+        "height": 8,
+        "overflow": "visible",
+        "position": "relative",
+        "width": "70%",
+      }
+    }
+  >
+    <View
+      style={
+        {
+          "backgroundColor": "#4F4FFF",
+          "borderBottomLeftRadius": 8,
+          "borderBottomRightRadius": 8,
+          "borderTopLeftRadius": 8,
+          "borderTopRightRadius": 8,
+          "height": "100%",
+          "left": 0,
+          "position": "absolute",
+          "top": 0,
+          "width": "5%",
+        }
+      }
+    />
+  </View>
+</View>
+`;

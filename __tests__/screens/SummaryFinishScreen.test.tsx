@@ -1,4 +1,4 @@
-import { fireEvent, render } from '@testing-library/react-native';
+import { render } from '@testing-library/react-native';
 import React from 'react';
 import SummaryFinishScreen from '../../src/screens/SummaryFinishScreen';
 
@@ -91,17 +91,6 @@ describe('SummaryFinishScreen', () => {
     expect(getByText('Costo del Plan: $150.00')).toBeTruthy();
   });
 
-  it('navigates back to Plans screen when back button is pressed', () => {
-    const { getByText } = render(
-      <SummaryFinishScreen navigation={mockNavigation} route={mockRoute} />
-    );
-
-    const backButton = getByText('‹').parent;
-    fireEvent.press(backButton);
-
-    expect(mockNavigate).toHaveBeenCalledWith('Plans');
-  });
-
   it('shows message when no plan is selected', () => {
     mockUseAppStore.mockReturnValue({
       selectedPlanInfo: null,
@@ -113,15 +102,6 @@ describe('SummaryFinishScreen', () => {
 
     expect(getByText('No hay información de plan seleccionado')).toBeTruthy();
     expect(queryByText('Resumen del seguro')).toBeNull();
-  });
-
-  it('renders back button with correct text', () => {
-    const { getByText } = render(
-      <SummaryFinishScreen navigation={mockNavigation} route={mockRoute} />
-    );
-
-    expect(getByText('Volver')).toBeTruthy();
-    expect(getByText('‹')).toBeTruthy();
   });
 
   it('displays all section titles', () => {

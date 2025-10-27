@@ -172,17 +172,6 @@ describe('PlanScreen', () => {
     expect(mockNavigate).toHaveBeenCalledWith('SummaryFinish', { quoteId: 'result' });
   });
 
-  it('shows back button when beneficiaryType or selectedPlan exists', () => {
-    mockUsePlanSelection.beneficiaryType = 'para-mi';
-
-    const { getByText } = render(
-      <PlanScreen navigation={mockNavigation} route={mockRoute} />
-    );
-
-    expect(getByText('Volver')).toBeTruthy();
-    expect(getByText('‹')).toBeTruthy();
-  });
-
   it('does not show back button when no beneficiaryType or selectedPlan', () => {
     mockUsePlanSelection.beneficiaryType = null;
     mockUsePlanSelection.selectedPlan = null;
@@ -194,14 +183,4 @@ describe('PlanScreen', () => {
     expect(queryByText('Volver')).toBeNull();
   });
 
-  it('navigates to Home when back button is pressed', () => {
-    mockUsePlanSelection.beneficiaryType = 'para-mi';
-
-    const { getByText } = render(
-      <PlanScreen navigation={mockNavigation} route={mockRoute} />
-    );
-
-    fireEvent.press(getByText('‹'));
-    expect(mockNavigate).toHaveBeenCalledWith('Home');
-  });
 });

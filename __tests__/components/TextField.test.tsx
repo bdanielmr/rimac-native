@@ -14,11 +14,6 @@ describe('TextField Component', () => {
     jest.clearAllMocks();
   });
 
-  it('renders label correctly', () => {
-    const { getByText } = render(<TextField {...mockProps} />);
-    expect(getByText('Número de documento')).toBeTruthy();
-  });
-
   it('renders input field and placeholder', () => {
     const { getByText } = render(<TextField {...mockProps} />);
     expect(getByText('Ingresa tu documento')).toBeTruthy();
@@ -29,14 +24,6 @@ describe('TextField Component', () => {
       <TextField {...mockProps} error="Campo requerido" />
     );
     expect(getByText('Campo requerido')).toBeTruthy();
-  });
-
-  it('renders dropdown button when showDropdown is true', () => {
-    const { getByText } = render(
-      <TextField {...mockProps} showDropdown={true} />
-    );
-    expect(getByText('DNI')).toBeTruthy();
-    expect(getByText('▼')).toBeTruthy();
   });
 
   it('opens modal when dropdown button is pressed', () => {

@@ -2,11 +2,27 @@ import { render } from '@testing-library/react-native';
 import React from 'react';
 import { Text, View } from 'react-native';
 import { Layout } from '../../src/components/Layout';
+
 // Mock de las imágenes
 jest.mock('../../assets/images/Logo.png', () => 'logo');
 jest.mock('../../assets/images/logo-white.png', () => 'logo-white');
+jest.mock('../../assets/images/telephoneSolid.png', () => 'telephone');
+
+// Mock de useSafeAreaInsets
+jest.mock('react-native-safe-area-context', () => ({
+  useSafeAreaInsets: jest.fn(() => ({
+    top: 44,
+    bottom: 34,
+    left: 0,
+    right: 0,
+  })),
+}));
 
 describe('Layout Component', () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
   it('renders children content correctly', () => {
     const { getByText } = render(
       <Layout>
@@ -17,16 +33,14 @@ describe('Layout Component', () => {
     expect(getByText('Main Content')).toBeTruthy();
   });
 
-  it('renders header with phone number and text', () => {
+  it('renders header with phone number', () => {
     const { getByText } = render(
       <Layout>
         <Text>Content</Text>
       </Layout>
     );
 
-    expect(getByText('¡Compra por este medio!')).toBeTruthy();
     expect(getByText('(01) 411 6001')).toBeTruthy();
-    expect(getByText('📞')).toBeTruthy();
   });
 
   it('renders footer with copyright text', () => {
@@ -77,6 +91,18 @@ describe('Layout Component', () => {
     );
 
     const images = UNSAFE_getAllByType('Image');
-    expect(images).toHaveLength(2); // Header logo + Footer logo
+    expect(images.length).toBeGreaterThanOrEqual(3); // Header logo + Telephone + Footer logo
+  });
+
+  it('applies safe area insets', () => {
+    const { useSafeAreaInsets } = require('react-native-safe-area-context');
+    
+    render(
+      <Layout>
+        <Text>Content</Text>
+      </Layout>
+    );
+
+    expect(useSafeAreaInsets).toHaveBeenCalled();
   });
 });

@@ -1,0 +1,62 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Badge Component matches snapshot 1`] = `
+<View
+  style={
+    {
+      "alignSelf": "flex-start",
+      "borderBottomLeftRadius": 4,
+      "borderBottomRightRadius": 4,
+      "borderTopLeftRadius": 4,
+      "borderTopRightRadius": 4,
+      "marginBottom": 8,
+      "overflow": "hidden",
+    }
+  }
+>
+  <ViewManagerAdapter_ExpoLinearGradient
+    colors={
+      [
+        4278252770,
+        4278255487,
+      ]
+    }
+    endPoint={
+      [
+        1,
+        0,
+      ]
+    }
+    startPoint={
+      [
+        0,
+        0,
+      ]
+    }
+    style={
+      {
+        "borderBottomLeftRadius": 4,
+        "borderBottomRightRadius": 4,
+        "borderTopLeftRadius": 4,
+        "borderTopRightRadius": 4,
+        "paddingBottom": 6,
+        "paddingLeft": 10,
+        "paddingRight": 10,
+        "paddingTop": 6,
+      }
+    }
+  >
+    <Text
+      style={
+        {
+          "color": "#03050F",
+          "fontSize": 12,
+          "fontWeight": "700",
+        }
+      }
+    >
+      Promoción
+    </Text>
+  </ViewManagerAdapter_ExpoLinearGradient>
+</View>
+`;
