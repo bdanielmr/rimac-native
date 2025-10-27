@@ -97,7 +97,6 @@ export const useQuoteForm = () => {
     }
 
     if (!shouldFetchData(dni)) {
-      console.log("datos en cache para dni:", dni);
       return true;
     }
 
@@ -105,27 +104,20 @@ export const useQuoteForm = () => {
     setError(null);
 
     try {
-      console.log("fetching usuario para dni:", dni);
       const userData = await fetchUser();
       
       if (!userData) {
         throw new Error(ERROR_MESSAGES.fetchUser);
       }
       
-      console.log("usuario obtenido:", userData);
-
-      console.log("fetching planes...");
       const plansData = await fetchPlans();
       
       if (!plansData || !plansData.list) {
         throw new Error(ERROR_MESSAGES.fetchPlans);
       }
       
-      console.log("planes obtenidos:", plansData.list.length, "planes");
-
       setCachedData(userData, plansData.list, dni);
-      console.log("daatos cargados y cacheados");
-      
+
       return true;
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : "error desconocido";
