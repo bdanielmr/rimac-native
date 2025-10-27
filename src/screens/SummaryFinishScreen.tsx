@@ -1,6 +1,6 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import React from "react";
-import { Image, ScrollView, Text, TouchableOpacity, View } from "react-native";
+import { Image, ScrollView, Text, TouchableOpacity, View, useWindowDimensions } from "react-native";
 import styled from "styled-components/native";
 import { StepIndicator } from "../components/atoms/StepIndicator";
 import { Layout } from "../components/Layout";
@@ -112,7 +112,6 @@ const CircleButton = styled(TouchableOpacity)<{ disabled?: boolean }>`
   border-color: ${({ disabled }: any) => (disabled ? "#CBD5E1" : "#4338CA")};
   align-items: center;
   justify-content: center;
-  padding: 0px 4px 4px 2px;
   opacity: ${({ disabled }: any) => (disabled ? 0.5 : 1)};
 `;
 
@@ -126,6 +125,8 @@ const STEPS = [
 export default function SummaryFinishScreen({
   navigation,
 }: NativeStackScreenProps<RootStack, "SummaryFinish">) {
+  const { width } = useWindowDimensions();
+  const isMobile = width < 925;
   const { selectedPlanInfo } = useAppStore();
 
   const stepper = (
@@ -141,19 +142,23 @@ export default function SummaryFinishScreen({
     );
   }
   return (
-    <Layout stepper={stepper}>
+    <Layout stepper={!isMobile && stepper}>
       <ScrollView 
         contentContainerStyle={{ flexGrow: 1 }}
         showsVerticalScrollIndicator={false}
       >
       <Container>
+        { !isMobile && (
           <CircleContainer>
             <CircleButton activeOpacity={0.7} onPress={() => navigation.navigate("Plans")}>
-              <Text style={{ fontSize: 18, color: "#4338CA" }}>‹</Text>
+              <Image
+                source={require("../../assets/images/arrowRetur.png")}
+              />
             </CircleButton>
             <BackText>Volver</BackText>
           </CircleContainer>
-
+        )
+        }
         <Title>Resumen del seguro</Title>
         
         <SummaryCard>

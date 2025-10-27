@@ -1,6 +1,6 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import React from "react";
-import { Image, ScrollView, Text, TouchableOpacity } from "react-native";
+import { Image, ScrollView, TouchableOpacity, useWindowDimensions } from "react-native";
 import styled from "styled-components/native";
 import { StepIndicator } from "../components/atoms/StepIndicator";
 import { Layout } from "../components/Layout";
@@ -13,12 +13,22 @@ const Container = styled.View`
   width: 100%;
   max-width: 1200px;
   margin: 0 auto;
-  padding: 25px 24px 55px 24px;
+  padding: 32px 0px;
+`;
+
+const BackContainer = styled.View`
+  padding: 0px 24px;
+  margin-bottom: 24px;
 `;
 
 const BackText = styled.Text`
   font-size: 18px;
   color: #4338CA;
+`;
+
+const TitleContainer = styled.View`
+  padding: 0px 24px;
+  margin-bottom: 32px;
 `;
 
 const Title = styled.Text`
@@ -33,22 +43,19 @@ const Subtitle = styled.Text`
   font-size: 14px;
   color: #6b7280;
   text-align: center;
-  margin-bottom: 32px;
 `;
 
 const CardsContainer = styled.View`
   flex-direction: row;
-  gap: 16px;
+  gap: 26px;
   justify-content: center;
   flex-wrap: wrap;
+  padding: 0px 24px;
 `;
 
 const PlansContainer = styled.View`
   margin-top: 32px;
-  flex-wrap: wrap;
-  flex-direction: row;
-  gap: 16px;
-  justify-content: center;
+  padding: 0px 0px;
 `;
 
 const CircleContainer = styled.View`
@@ -65,7 +72,6 @@ const CircleButton = styled(TouchableOpacity)<{ disabled?: boolean }>`
   border-color: ${({ disabled }: any) => (disabled ? "#CBD5E1" : "#4338CA")};
   align-items: center;
   justify-content: center;
-  padding: 0px 4px 4px 2px;
   opacity: ${({ disabled }: any) => (disabled ? 0.5 : 1)};
 `;
 
@@ -77,6 +83,9 @@ const STEPS = [
 export default function PlanScreen({
   navigation,
 }: NativeStackScreenProps<RootStack, "Plans">) {
+  
+  const { width } = useWindowDimensions();
+  const isMobile = width < 925;
   const {
     beneficiaryType,
     selectedPlan,
@@ -98,19 +107,26 @@ export default function PlanScreen({
       nestedScrollEnabled
       directionalLockEnabled
       contentContainerStyle={{ paddingBottom: 24 }}
+      showsVerticalScrollIndicator={false}
     >
       <Container>
-        {(beneficiaryType || selectedPlan) && (
-          <CircleContainer>
-            <CircleButton activeOpacity={0.7} onPress={() => navigation.navigate("Home")}>
-              <Text style={{ fontSize: 18, color: "#4338CA" }}>‹</Text>
-            </CircleButton>
-            <BackText>Volver</BackText>
-          </CircleContainer>
+        {(beneficiaryType || selectedPlan) && !isMobile && (
+          <BackContainer>
+            <CircleContainer>
+              <CircleButton activeOpacity={0.7} onPress={() => navigation.navigate("Home")}>
+              <Image
+                source={require("../../assets/images/arrowRetur.png")}
+              />
+              </CircleButton>
+              <BackText>Volver</BackText>
+            </CircleContainer>
+          </BackContainer>
         )}
 
-        <Title>{userName} ¿Para quién deseas cotizar?</Title>
-        <Subtitle>Selecciona la opción que se ajuste más a tus necesidades.</Subtitle>
+        <TitleContainer>
+          <Title>{userName} ¿Para quién deseas cotizar?</Title>
+          <Subtitle>Selecciona la opción que se ajuste más a tus necesidades.</Subtitle>
+        </TitleContainer>
 
         <CardsContainer>
           <BeneficiaryCard
@@ -160,7 +176,7 @@ export default function PlanScreen({
   );
 
   return (
-    <Layout stepper={<StepIndicator steps={STEPS} currentStep={1} />}>
+    <Layout stepper={<StepIndicator steps={STEPS} currentStep={1} navigation={navigation} />}>
       {content}
     </Layout>
   );
