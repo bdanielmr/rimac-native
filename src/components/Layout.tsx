@@ -1,7 +1,6 @@
 import React, { ReactNode } from "react";
-import { Text } from "react-native";
+import { Image } from "react-native";
 import styled from "styled-components/native";
-
 const Screen = styled.View`
   flex: 1;
   background: white;
@@ -42,7 +41,7 @@ const Logo = styled.Image`
 const HeaderRight = styled.View`
   flex-direction: row;
   align-items: center;
-  gap: 8px;
+  gap: 15px;
 `;
 
 const HeaderText = styled.Text`
@@ -55,6 +54,7 @@ const PhoneText = styled.Text`
   color: #03050f;
   font-size: 18px;
   font-weight: 700;
+  margin-left: -10px
 `;
 
 const StepperWrapper = styled.View`
@@ -121,7 +121,9 @@ export function Layout({ children, background, stepper }: LayoutProps) {
           </HeaderLeft>
           <HeaderRight>
             <HeaderText>¡Compra por este medio!</HeaderText>
-            <Text style={{ fontSize: 20 }}>📞</Text>
+              <Image
+                source={require("../../assets/images/telephoneSolid.png")}
+              />
             <PhoneText>(01) 411 6001</PhoneText>
           </HeaderRight>
         </Header>
