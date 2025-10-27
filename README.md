@@ -1,50 +1,86 @@
-# Welcome to your Expo app 👋
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+# Rimac Native - Cotizador de Seguros de Salud
 
-## Get started
+Aplicación **móvil y web** desarrollada con **React Native + Expo** para cotizar seguros de salud de manera rápida, intuitiva y 100% online.
 
-1. Install dependencies
+---
+## URL
+[https://rimac-native.vercel.app](https://rimac-native.vercel.app/)
+## Imagenes
+<div style="display: flex; gap: 10px;">
+  <img src="https://i.imgur.com/ADfjTHB.png" height="300" width="500"/>
+  <img src="https://i.imgur.com/N81z3tf.png" height="300"/>
+</div>
 
-   ```bash
-   npm install
-   ```
 
-2. Start the app
+## ✨ Características
 
-   ```bash
-   npx expo start
-   ```
+| ✅ Funcionalidad | Descripción |
+|-----------------|-------------|
+| 📱 Multiplataforma | Compatible con **iOS, Android y Web** |
+| 🎨 Diseño Responsive | Layout flexible con Styled Components |
+| 💾 Persistencia | Caché local con AsyncStorage |
+| 🧠 Estado Global | Gestión con **Zustand** |
+| ✅ Form Validations | Validación de DNI y celular en tiempo real |
+| 🔄 Flujo Optimizado | Carrusel interactivo de planes |
+| 🧪 Calidad | Tests unitarios e integración con Jest |
 
-In the output, you'll find options to open the app in a
+---
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+## 🛠 Tecnologías
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+| Tipo | Stack |
+|------|-------|
+| Framework | React Native (0.81.5) + Expo (54.0.20) |
+| Lenguaje | TypeScript (5.9.2) |
+| Estilos | Styled Components (6.1.19) |
+| Estado | Zustand (5.0.8) |
+| Navegación | React Navigation (7.x) |
+| Almacenamiento | AsyncStorage (2.2.0) |
+| Testing | Jest + React Native Testing Library |
 
-## Get a fresh project
+---
 
-When you're ready, run:
+## 📦 Requisitos Previos
+
+- Node.js **v20+**
+- npm o yarn
+- Expo CLI
+- Xcode (iOS)
+- Android Studio (Android)
+
+---
+
+## 🚀 Instalación
 
 ```bash
-npm run reset-project
-```
+# Clonar repositorio
+git clone https://github.com/bdanielmr/rimac-native.git
+cd rimac-native
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+# Instalar dependencias
+npm install
 
-## Learn more
+## 💻 Ejecución
 
-To learn more about developing your project with Expo, look at the following resources:
+`# Iniciar proyecto 
+npx expo start --web`
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+## 🧪 Testing
 
-## Join the community
+`npm run test  
+npm run test:coverage # Cobertura` 
 
-Join our community of developers creating universal apps.
+----------
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+## 🏗 Arquitectura
+
+-   Basado en **Atomic Design**
+    
+-   **Zustand** como estado global
+    
+-   **AsyncStorage** como caché
+    
+-   Hooks reutilizables
+    
+-   Arquitectura desacoplada y modular
