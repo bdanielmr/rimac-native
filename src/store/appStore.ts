@@ -14,6 +14,17 @@ interface Plan {
   age: number;
 }
 
+interface SelectedPlanInfo {
+  userName: string;
+  userLastName: string;
+  dni: string;
+  celular: string;
+  planName: string;
+  planCost: number;
+  beneficiaryType: "para-mi" | "para-alguien-mas";
+  selectedAt: number;
+}
+
 type AppState = {
   dni: string;
   celular: string;
@@ -23,9 +34,13 @@ type AppState = {
   cachedPlans: Plan[];
   lastFetchedDni: string | null;
   cacheTimestamp: number;
+  
+  selectedPlanInfo: SelectedPlanInfo | null;
+  
   set: (p: Partial<AppState>) => void;
   setCachedData: (user: User, plans: Plan[], dni: string) => void;
   shouldFetchData: (dni: string) => boolean;
+  setSelectedPlanInfo: (planInfo: SelectedPlanInfo) => void;
   reset: () => void;
   loadFromStorage: () => Promise<void>;
 };
@@ -74,6 +89,7 @@ export const useAppStore = create<AppState>((set, get) => ({
   cachedPlans: [],
   lastFetchedDni: null,
   cacheTimestamp: 0,
+  selectedPlanInfo: null,
   
   set: (p) => {
     set(p);
@@ -101,6 +117,12 @@ export const useAppStore = create<AppState>((set, get) => ({
     return !state.cachedUser || dniChanged || cacheExpired;
   },
   
+  setSelectedPlanInfo: (planInfo) => {
+    set({ selectedPlanInfo: planInfo });
+    const state = get();
+    saveToStorage(state);
+  },
+  
   reset: () => {
     const resetState = {
       dni: "",
@@ -111,6 +133,7 @@ export const useAppStore = create<AppState>((set, get) => ({
       cachedPlans: [],
       lastFetchedDni: null,
       cacheTimestamp: 0,
+      selectedPlanInfo: null,
     };
     set(resetState);
     saveToStorage(resetState);
