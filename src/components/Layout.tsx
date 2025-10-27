@@ -1,6 +1,8 @@
 import React, { ReactNode } from "react";
-import { Image } from "react-native";
+import { Image, useWindowDimensions } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import styled from "styled-components/native";
+
 const Screen = styled.View`
   flex: 1;
   background: white;
@@ -13,10 +15,11 @@ const ScrollContainer = styled.ScrollView.attrs({
   flex: 1;
 `;
 
-const HeaderContainer = styled.View`
+const HeaderContainer = styled.View<{ topInset: number }>`
   width: 100%;
   max-width: 1360px;
   padding: 0px 8%;
+  padding-top: ${({ topInset } : any) => topInset}px;
   align-self: center;
 `;
 
@@ -54,12 +57,12 @@ const PhoneText = styled.Text`
   color: #03050f;
   font-size: 18px;
   font-weight: 700;
-  margin-left: -10px
+  margin-left: -10px;
 `;
 
 const StepperWrapper = styled.View`
   width: 100%;
-  background-color: #EDEFFC;
+  background-color: #edeffc;
 `;
 
 const Container = styled.View`
@@ -74,21 +77,30 @@ const ContentWrapper = styled.View`
   flex: 1;
 `;
 
-const Footer = styled.View`
+const Footer = styled.View<{ bottomInset: number }>`
   border-top-width: 1px;
   border-top-color: #e5e7eb;
   background: #03050f;
   padding: 20px 11%;
+  padding-bottom: ${({ bottomInset } : any) => Math.max(bottomInset + 20, 20)}px;
 `;
 
-const FooterContent = styled.View`
+const FooterContent = styled.View<{isMobile : any}>`
   max-width: 1360px;
   width: 100%;
   align-self: center;
-  flex-direction: row;
-  justify-content: space-between;
+  flex-direction: ${({ isMobile } : any) => (isMobile ? "row" : "column")};
+  justify-content:  space-between;
   align-items: center;
 `;
+
+const Divider = styled.View`
+  height: 1px;
+  width: 100%;
+  margin: 15px 0px;
+  background-color: #2B304E;
+`;
+
 
 const FooterLogo = styled.Image`
   width: 85px;
@@ -107,11 +119,14 @@ interface LayoutProps {
 }
 
 export function Layout({ children, background, stepper }: LayoutProps) {
+  const insets = useSafeAreaInsets();
+  const { width } = useWindowDimensions();
+  const isMobile = width < 925;
   return (
     <Screen>
       {background}
       
-      <HeaderContainer>
+      <HeaderContainer topInset={insets.top}>
         <Header>
           <HeaderLeft>
             <Logo
@@ -120,10 +135,10 @@ export function Layout({ children, background, stepper }: LayoutProps) {
             />
           </HeaderLeft>
           <HeaderRight>
-            <HeaderText>¡Compra por este medio!</HeaderText>
-              <Image
-                source={require("../../assets/images/telephoneSolid.png")}
-              />
+            {!isMobile && <HeaderText>¡Compra por este medio!</HeaderText>}
+            <Image
+              source={require("../../assets/images/telephoneSolid.png")}
+            />
             <PhoneText>(01) 411 6001</PhoneText>
           </HeaderRight>
         </Header>
@@ -136,12 +151,13 @@ export function Layout({ children, background, stepper }: LayoutProps) {
           <ContentWrapper>{children}</ContentWrapper>
         </Container>
 
-        <Footer>
-          <FooterContent>
+        <Footer bottomInset={insets.bottom}>
+          <FooterContent isMobile={!isMobile}>
             <FooterLogo
               source={require("../../assets/images/logo-white.png")}
               resizeMode="contain"
             />
+            {isMobile && <Divider/>}
             <CopyrightText>© 2023 RIMAC Seguros y Reaseguros.</CopyrightText>
           </FooterContent>
         </Footer>

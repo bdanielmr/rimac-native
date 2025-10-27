@@ -17,7 +17,7 @@ const Card = styled(TouchableOpacity)<{ selected: boolean; isMobile: boolean }>`
   shadow-color: #AEACF3;
   shadow-offset: 0px 1px;
   shadow-opacity: 0.35;
-  shadow-radius: 32px;
+  shadow-radius: 10px;
   elevation: 8;
 `;
 

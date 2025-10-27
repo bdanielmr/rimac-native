@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import {
   FlatList,
+  Image,
   Modal,
-  Text,
   TextInputProps
 } from "react-native";
 import styled from "styled-components/native";
@@ -27,6 +27,7 @@ const InputWrapper = styled.View<{ focused: boolean; hasError: boolean }>`
   background: #ffffff;
   overflow: hidden;
   position: relative;
+  min-height: 56px;
 `;
 
 const DropdownButton = styled.TouchableOpacity`
@@ -50,6 +51,7 @@ const InputContainer = styled.View`
   flex: 1;
   position: relative;
   justify-content: center;
+  min-height: 56px;
 `;
 
 const Input = styled.TextInput<{ hasValue: boolean }>`
@@ -57,6 +59,7 @@ const Input = styled.TextInput<{ hasValue: boolean }>`
   padding: ${({ hasValue } : any) => (hasValue ? "20px 16px 8px 16px" : "16px")};
   font-size: 16px;
   color: #03050f;
+  min-height: 56px;
 `;
 
 const FloatingPlaceholder = styled.Text<{ isFloating: boolean }>`
@@ -64,8 +67,7 @@ const FloatingPlaceholder = styled.Text<{ isFloating: boolean }>`
   left: 16px;
   font-size: ${({ isFloating } : any) => (isFloating ? "12px" : "14px")};
   color: #a9afc3;
-  top: ${({ isFloating } : any) => (isFloating ? "8px" : "16px")};
-  transition: all 0.2s;
+  top: ${({ isFloating } : any) => (isFloating ? "8px" : "18px")};
   pointer-events: none;
 `;
 
@@ -184,7 +186,6 @@ export function TextField({
 
   return (
     <Container>
-      <Label>{label}</Label>
       <InputWrapper focused={isFocused} hasError={!!error}>
         {showDropdown && (
           <DropdownButton
@@ -192,7 +193,9 @@ export function TextField({
             activeOpacity={0.7}
           >
             <DropdownText>{selectedOption?.label || "DNI"}</DropdownText>
-            <Text style={{ fontSize: 12 }}>▼</Text>
+            <Image
+              source={require("../../assets/images/arrowDown.png")}
+            />
           </DropdownButton>
         )}
         <InputContainer>
@@ -206,6 +209,7 @@ export function TextField({
             onFocus={handleFocus}
             onBlur={handleBlur}
             hasValue={showFloatingLabel}
+            textAlignVertical="center"
             {...props}
           />
         </InputContainer>

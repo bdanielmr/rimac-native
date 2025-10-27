@@ -1,15 +1,17 @@
 import React from "react";
+import { useWindowDimensions } from "react-native";
 import styled from "styled-components/native";
 
-const StyledButton = styled.TouchableOpacity<{ disabled?: boolean }>`
+const StyledButton = styled.TouchableOpacity<{ disabled?: boolean; isMobile: boolean }>`
   background: ${({ disabled } : any) => (disabled ? "#c5cad6" : "#03050f")};
   padding: 20px;
   border-radius: 40px;
   align-items: center;
   justify-content: center;
-  width: 195px;
-  heigt: 64px;
+  width: ${({ isMobile } : any) => (isMobile ? "100%" : "195px")};
+  height: 64px;
   margin-bottom: 16px;
+  align-self: ${({ isMobile } : any) => (isMobile ? "stretch" : "flex-start")};
 `;
 
 const ButtonText = styled.Text<{ disabled?: boolean }>`
@@ -26,8 +28,16 @@ interface ButtonProps {
 }
 
 export function Button({ title, onPress, disabled }: ButtonProps) {
+  const { width } = useWindowDimensions();
+  const isMobile = width < 925;
+
   return (
-    <StyledButton onPress={onPress} disabled={disabled} activeOpacity={0.8}>
+    <StyledButton 
+      onPress={onPress} 
+      disabled={disabled} 
+      activeOpacity={0.8}
+      isMobile={isMobile}
+    >
       <ButtonText disabled={disabled}>{title}</ButtonText>
     </StyledButton>
   );

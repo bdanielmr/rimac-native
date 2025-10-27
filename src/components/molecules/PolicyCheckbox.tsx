@@ -4,8 +4,8 @@ import styled from "styled-components/native";
 import { Checkbox } from "../Checkbox";
 
 const LinkText = styled.Text`
-  color: #2563eb;
-  text-decoration-line: underline;
+  color: #0A051E;
+  text-decoration-line: none;
 `;
 
 const CheckboxText = styled.Text`

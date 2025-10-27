@@ -26,7 +26,7 @@ const PagerBar = styled.View`
   align-items: center;
   justify-content: center;
   gap: 12px;
-  margin-top: 16px;
+  margin-top: 24px;
 `;
 
 const CircleButton = styled(TouchableOpacity)<{ disabled?: boolean }>`
@@ -56,11 +56,11 @@ export const PlanCarousel: React.FC<Props> = ({ plans, onSelect }) => {
   const isDesktop = width >= 900;
 
   const SIDE = 24;
-  const GAP = 16;
-  const PEEK = 40;
+  const GAP = 32;
+  const PEEK = 24;
 
   const cardWidth = useMemo(
-    () => Math.min(288, Math.max(288, width - SIDE * 2 - PEEK)),
+    () => Math.min(320, Math.max(288, width - SIDE * 2 - PEEK)),
     [width]
   );
 
@@ -85,21 +85,23 @@ export const PlanCarousel: React.FC<Props> = ({ plans, onSelect }) => {
   // Desktop: grilla estática
   if (isDesktop) {
     return (
-      <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 16, justifyContent: "center" }}>
-        {plans.map((plan) => (
-          <View key={plan.id} style={{ width: 320, maxWidth: 360 }}>
-            <PlanCard
-              name={plan.name}
-              icon={plan.icon}
-              badge={plan.badge}
-              cost={plan.cost}
-              costBefore={plan.costBefore}
-              benefits={plan.benefits}
-              onSelect={() => onSelect(plan.id)}
-              cardWidth={288}
-            />
-          </View>
-        ))}
+      <View style={{ paddingHorizontal: 24 }}>
+        <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 32, justifyContent: "center" }}>
+          {plans.map((plan) => (
+            <View key={plan.id} style={{ width: 320, maxWidth: 360 }}>
+              <PlanCard
+                name={plan.name}
+                icon={plan.icon}
+                badge={plan.badge}
+                cost={plan.cost}
+                costBefore={plan.costBefore}
+                benefits={plan.benefits}
+                onSelect={() => onSelect(plan.id)}
+                cardWidth={288}
+              />
+            </View>
+          ))}
+        </View>
       </View>
     );
   }
@@ -116,6 +118,7 @@ export const PlanCarousel: React.FC<Props> = ({ plans, onSelect }) => {
         contentContainerStyle={{
           paddingLeft: SIDE,
           paddingRight: SIDE + PEEK,
+          paddingVertical: 8,
         }}
         onScroll={handleScroll}
         onScrollBeginDrag={handleScrollBeginDrag}

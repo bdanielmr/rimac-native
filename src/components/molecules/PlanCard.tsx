@@ -1,5 +1,5 @@
 import React from "react";
-import { Image, View } from "react-native";
+import { Image } from "react-native";
 import styled from "styled-components/native";
 import { Separator } from "../atoms/Separator";
 
@@ -9,27 +9,27 @@ const PlanCardContainer = styled.View<{ $cardWidth?: number }>`
   padding: 24px;
   margin-bottom: 16px;
   position: relative;
-  width: ${({ $cardWidth }: any) => ($cardWidth ? `${$cardWidth}px` : "288px")};
-  height: 687px;
+  width: ${({ $cardWidth }: any) => ($cardWidth ? `288px` : "288px")};
+  min-height: 650px;
   shadow-color: #aeacf3;
   shadow-offset: 0px 1px;
   shadow-opacity: 0.35;
-  shadow-radius: 32px;
+  shadow-radius: 8px;
   elevation: 8;
 `;
 
 const BadgeContainer = styled.View`
   position: absolute;
-  top: 24px;
+  top: 10px;
   left: 24px;
-  background-color: #22c55e;
-  padding: 6px 12px;
+  background-color: #7DF0BA;
+  padding: 5px 12px;
   border-radius: 8px;
   z-index: 1;
 `;
 
 const BadgeText = styled.Text`
-  color: #fff;
+  color: #141938;
   font-size: 11px;
   font-weight: 700;
 `;
@@ -39,7 +39,7 @@ const PlanHeader = styled.View<{ hasBadge: boolean }>`
   align-items: center;
   gap: 16px;
   margin-bottom: 24px;
-  margin-top: ${({ hasBadge }: any) => (hasBadge ? "32px" : "0px")};
+  margin-top: ${({ hasBadge }: any) => (hasBadge ? "10px" : "10px")};
 `;
 
 const PlanIconContainer = styled.View`
@@ -56,7 +56,7 @@ const PlanTitle = styled.Text`
 
 const CostLabel = styled.Text`
   font-size: 11px;
-  color: #9ca3af;
+  color: #7981B2;
   letter-spacing: 0.5px;
   margin-bottom: 8px;
   font-weight: 600;
@@ -79,6 +79,11 @@ const Cost = styled.Text`
   font-size: 28px;
   font-weight: 700;
   color: #03050f;
+`;
+
+const BenefitsContainer = styled.View`
+  flex: 1;
+  margin-bottom: 80px;
 `;
 
 const BenefitItem = styled.View`
@@ -106,22 +111,21 @@ const BenefitTextBold = styled.Text`
   font-weight: 700;
 `;
 
-const ContainerBotton = styled.TouchableOpacity`
+const ButtonContainer = styled.View`
   position: absolute;
-  height: 100px;
-  width: 85%;
-  bottom: 10;
-  display: flex;
+  bottom: 24px;
+  left: 24px;
+  right: 24px;
   align-items: center;
 `;
 
 const SelectButton = styled.TouchableOpacity`
-  background-color: #FF1C44;
+  background-color: #ff1c44;
   padding: 16px 24px;
   border-radius: 999px;
   align-items: center;
-  margin-top: 24px;
-  width: 224px;
+  width: 100%;
+  max-width: 240px;
 `;
 
 const SelectButtonText = styled.Text`
@@ -143,16 +147,12 @@ interface PlanCardProps {
 
 const renderBenefitText = (text: string) => {
   const parts = text.split(/(\*\*.*?\*\*)/g);
-  
+
   return (
     <BenefitText>
       {parts.map((part, i) => {
-        if (part.startsWith('**') && part.endsWith('**')) {
-          return (
-            <BenefitTextBold key={i}>
-              {part.slice(2, -2)}
-            </BenefitTextBold>
-          );
+        if (part.startsWith("**") && part.endsWith("**")) {
+          return <BenefitTextBold key={i}>{part.slice(2, -2)}</BenefitTextBold>;
         }
         return part;
       })}
@@ -161,8 +161,8 @@ const renderBenefitText = (text: string) => {
 };
 
 const iconMap = {
-  homeLight: require('../../../assets/images/homeLight.png'),
-  hospitalLight: require('../../../assets/images/hospitalLight.png'),
+  homeLight: require("../../../assets/images/homeLight.png"),
+  hospitalLight: require("../../../assets/images/hospitalLight.png"),
 };
 
 export const PlanCard: React.FC<PlanCardProps> = ({
@@ -183,18 +183,17 @@ export const PlanCard: React.FC<PlanCardProps> = ({
     )}
 
     <PlanHeader hasBadge={!!badge}>
+      <PlanTitle>{name}</PlanTitle>
       <PlanIconContainer>
         <Image
           source={iconMap[icon as keyof typeof iconMap]}
           style={{
             position: "absolute",
             right: 0,
-            top: 0,
-
+            top: 10,
           }}
         />
       </PlanIconContainer>
-      <PlanTitle>{name}</PlanTitle>
     </PlanHeader>
 
     <CostLabel>COSTO DEL PLAN</CostLabel>
@@ -202,19 +201,22 @@ export const PlanCard: React.FC<PlanCardProps> = ({
       {costBefore && <CostBefore>${costBefore} antes</CostBefore>}
       <Cost>${cost} al mes</Cost>
     </CostContainer>
+
     <Separator />
-    <View>
+
+    <BenefitsContainer>
       {benefits.map((benefit, index) => (
         <BenefitItem key={index}>
           <BulletPoint>•</BulletPoint>
           {renderBenefitText(benefit)}
         </BenefitItem>
       ))}
-    </View>
-      <ContainerBotton>
-    <SelectButton onPress={onSelect}>
-      <SelectButtonText>Seleccionar plan</SelectButtonText>
-    </SelectButton>
-    </ContainerBotton>
+    </BenefitsContainer>
+
+    <ButtonContainer>
+      <SelectButton onPress={onSelect} activeOpacity={0.8}>
+        <SelectButtonText>Seleccionar plan</SelectButtonText>
+      </SelectButton>
+    </ButtonContainer>
   </PlanCardContainer>
 );
